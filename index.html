@@ -4,20 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مفاجأة خاصة جداً 🎂</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
+        /* (نفس الستايل الأصلي الخاص فيج) */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #fff5f6; background-image: radial-gradient(#fbc7d4 1.5px, transparent 1.5px); background-size: 18px 18px; color: #564447; font-family: 'Tajawal', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
-        .container { background: white; padding: 40px 25px; border-radius: 40px; width: 100%; max-width: 420px; text-align: center; border: 2px solid #ffe3e7; box-shadow: 0 15px 35px rgba(220, 160, 170, 0.15); }
-        .welcome-screen { position: fixed; top:0; left:0; width:100%; height:100%; background:#fff5f6; z-index:9999; display:flex; justify-content:center; align-items:center; }
-        .step { display: none; } .step.active { display: block; }
-        .btn { background: linear-gradient(135deg, #fbc7d4, #ffb3c1); color: white; border: none; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 30px; cursor: pointer; width: 80%; }
-        .btn-outline { background: white; color: #bd7a8b; border: 2px solid #fbc7d4; margin-bottom: 10px; width: 100%; }
-        .loader { border: 5px solid #fff0f2; border-top: 5px solid #dca0aa; border-radius: 50%; width: 65px; height: 65px; animation: spin 1s linear infinite; margin: 40px auto; }
+        body { background-color: #fff5f6; background-image: radial-gradient(#fbc7d4 1.5px, transparent 1.5px); background-size: 18px 18px; color: #564447; font-family: 'Tajawal', 'Cairo', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
+        .container { background: white; padding: 40px 25px; border-radius: 40px; width: 100%; max-width: 420px; text-align: center; border: 2px solid #ffe3e7; position: relative; box-shadow: 0 15px 35px rgba(220, 160, 170, 0.15); transition: all 0.4s ease; }
+        .gold-border { border: 3px solid #dfb647; box-shadow: 0 15px 35px rgba(223, 182, 71, 0.2); }
+        .step { display: none; } .step.active { display: block; animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        h2 { font-size: 1.6rem; color: #bd7a8b; margin-bottom: 20px; font-weight: 700; }
+        p { font-size: 1.05rem; line-height: 1.6; margin-bottom: 25px; color: #6b5558; }
+        .btn { background: linear-gradient(135deg, #fbc7d4, #ffb3c1); color: white; border: none; padding: 14px 25px; font-size: 1.1rem; font-weight: bold; border-radius: 30px; cursor: pointer; width: 100%; margin-bottom: 15px; }
+        .btn-outline { background: white; color: #bd7a8b; border: 2px solid #fbc7d4; }
+        .loader { border: 5px solid #fff0f2; border-top: 5px solid #dca0aa; border-radius: 50%; width: 65px; height: 65px; animation: spin 1s linear infinite; margin: 40px auto 30px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .reveal-main-title { font-size: 2.2rem; font-weight: 900; color: #dfb647; margin-bottom: 20px; }
-        .grid-name-card { background: #fff9fa; border: 2px solid #fbc7d4; padding: 15px; border-radius: 20px; cursor: pointer; color: #bd7a8b; margin-top: 10px; font-weight: bold; }
-        .inner-gold-box { border: 2px solid #dfb647; border-radius: 20px; padding: 20px; margin: 20px 0; background: #fffbfa; }
+        .reveal-main-title { font-size: 2.6rem; font-weight: 900; color: #dfb647; margin-bottom: 20px; }
+        .screenshot-btn { background: #c19b27; color: white; border: none; padding: 16px 25px; font-size: 1.15rem; font-weight: 700; border-radius: 35px; cursor: pointer; width: 100%; }
+        .names-row-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 25px; }
+        .grid-name-card { background: #fff9fa; border: 2px solid #fbc7d4; padding: 16px 10px; border-radius: 20px; cursor: pointer; font-size: 1.1rem; font-weight: 700; color: #bd7a8b; }
+        .inner-gold-box { border: 2px solid #dfb647; border-radius: 25px; padding: 30px 15px; margin: 20px 0; background-color: #fffbfa; }
+        .badge-tag { background-color: #fbc7d4; color: #fff; padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; display: inline-block; margin-bottom: 20px; }
+        .invite-name { font-size: 1.7rem; font-weight: 800; color: #bd7a8b; margin-bottom: 15px; }
+        .invite-text { font-size: 1.05rem; line-height: 1.7; color: #564447; margin-bottom: 15px; }
+        .btn-restart { background: #bd7a8b; color: white; border: none; padding: 14px 20px; font-size: 1.1rem; font-weight: 700; border-radius: 30px; width: 100%; margin-bottom: 12px; }
+        .grey-btn { background: #f4eff0; color: #6b5558; border: none; padding: 12px 20px; font-size: 1rem; font-weight: 700; border-radius: 30px; width: 100%; }
+        /* شاشة الترحيب */
+        .welcome-screen { position: fixed; top:0; left:0; width:100%; height:100%; background:#fff5f6; z-index:9999; display:flex; justify-content:center; align-items:center; }
     </style>
 </head>
 <body>
@@ -25,76 +40,80 @@
     <audio id="myAudio" src="song.mp3" loop></audio>
 
     <div id="welcomeScreen" class="welcome-screen">
-        <button class="btn" onclick="startExperience()">اضغطي هنا لبدء المفاجأة 🌸</button>
+        <button class="btn" style="width: 80%;" onclick="startExperience()">اضغطي هنا لبدء المفاجأة 🌸</button>
     </div>
 
     <div id="mainContainer" class="container">
         <div id="step1" class="step active">
             <h2>مفاجأة عيد الميلاد! 🎉</h2>
-            <p>أهلاً بنات خالاتي! اختاروا التاريخ الصحيح:</p>
-            <button class="btn btn-outline" onclick="alert('خطأ! حاولوا مرة ثانية')">15 - 6</button>
-            <button class="btn btn-outline" onclick="nextStep(2)">29 - 5 (مايو)</button>
+            <button class="btn btn-outline" onclick="alert('أفاااا! مو هذا التاريخ..')">15 - 6 (يونيو)</button>
+            <button class="btn" onclick="nextStep(2)">29 - 5 (مايو)</button>
         </div>
-
         <div id="step2" class="step">
-            <h2>سؤال السرعة 🤫</h2>
-            <p>هل فطوم بتصيح من الفرحة؟</p>
-            <button class="btn btn-outline" onclick="nextStep(3)">هيه أكيد!</button>
+            <h2>سؤال السرعة والأمان 🤫</h2>
+            <button class="btn" onclick="nextStep(3)">هيه أكيد بتصيح! 👀</button>
         </div>
-
         <div id="step3" class="step">
             <h2>الخطوة الأخيرة 📥</h2>
-            <button class="btn" onclick="startLoading()">📥 تحميل الهدية</button>
+            <button class="btn" onclick="startLoadingProcess()">📥 تحميل الهدية وتفعيل الرابط</button>
         </div>
-
         <div id="stepLoading" class="step">
             <div class="loader"></div>
-            <h3>جاري التفعيل...</h3>
+            <h3>جاري التحميل...</h3>
         </div>
-
         <div id="stepReveal" class="step">
-            <div class="reveal-main-title">أنا العروسة الجديدة! 👰🏻‍♀️</div>
-            <button class="btn" onclick="nextStep('Gate')">استلام الدعوة ✉️</button>
+            <div class="reveal-main-title">أنا العروسة الجديدة! 👰🏻‍♀️✨</div>
+            <button class="screenshot-btn" onclick="showGatePage()">اضغطي لاستلام دعوتك السرية ✉️✨</button>
         </div>
-
         <div id="stepGate" class="step">
             <h2>بوابة شقيقات العروس</h2>
-            <div class="grid-name-card" onclick="openInvitation('فطوم رضي')">فطوم رضي 🌸</div>
-            <div class="grid-name-card" onclick="openInvitation('فطوم معلم')">فطوم معلم 🌸</div>
+            <div class="names-row-container">
+                <div class="grid-name-card" onclick="openInvitation('فطوم رضي')">فطوم رضي 🌸</div>
+                <div class="grid-name-card" onclick="openInvitation('فطوم معلم')">فطوم معلم 🌸</div>
+            </div>
         </div>
-
         <div id="stepInviteCard" class="step">
             <div class="inner-gold-box">
-                <h3 id="namePlace"></h3>
-                <p id="textPlace"></p>
+                <div id="badgePlace" class="badge-tag"></div>
+                <div id="namePlace" class="invite-name"></div>
+                <div id="textPlace" class="invite-text"></div>
             </div>
-            <button class="btn btn-outline" onclick="location.reload()">🏠 العودة للرئيسية</button>
+            <button class="btn-restart" onclick="location.reload()">🏠العودة للصفحه الرئيسيه</button>
         </div>
     </div>
 
     <script>
+        // دالة الترحيب اللي تشغل الصوت غصب
         function startExperience() {
             var audio = document.getElementById("myAudio");
-            audio.play(); // هني الآيفون بيقبل التشغيل غصبن عنه
+            audio.play(); 
             document.getElementById("welcomeScreen").style.display = "none";
         }
 
-        function nextStep(step) {
+        function nextStep(stepNum) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById('step' + step).classList.add('active');
+            document.getElementById('step' + stepNum).classList.add('active');
         }
 
-        function startLoading() {
+        function startLoadingProcess() {
             nextStep('Loading');
-            setTimeout(() => {
+            setTimeout(function() {
                 document.getElementById('mainContainer').classList.add('gold-border');
                 nextStep('Reveal');
-            }, 3000);
+            }, 3500);
         }
 
-        function openInvitation(name) {
-            document.getElementById('namePlace').innerText = name;
-            document.getElementById('textPlace').innerText = "هذا هو نص الدعوة الخاص بكِ..";
+        function showGatePage() { nextStep('Gate'); }
+
+        function openInvitation(key) {
+            // (بياناتك الأصلية)
+            const datasets = {
+                'فطوم رضي': { badge: "👑🎂", name: "فاطمة رضي", text: "كل عام وأنتِ بقلبي وسندي وسر سعادتي..." },
+                'فطوم معلم': { badge: "👭✨", name: "فاطمة معلم", text: "يا روح وعيون أختش الكبيرة..." }
+            };
+            document.getElementById('badgePlace').innerText = datasets[key].badge;
+            document.getElementById('namePlace').innerText = datasets[key].name;
+            document.getElementById('textPlace').innerText = datasets[key].text;
             nextStep('InviteCard');
         }
     </script>
