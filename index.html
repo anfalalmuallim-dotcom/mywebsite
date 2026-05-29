@@ -8,87 +8,256 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* (نفس الستايل الأصلي الخاص فيج) */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #fff5f6; background-image: radial-gradient(#fbc7d4 1.5px, transparent 1.5px); background-size: 18px 18px; color: #564447; font-family: 'Tajawal', 'Cairo', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
-        .container { background: white; padding: 40px 25px; border-radius: 40px; width: 100%; max-width: 420px; text-align: center; border: 2px solid #ffe3e7; position: relative; box-shadow: 0 15px 35px rgba(220, 160, 170, 0.15); transition: all 0.4s ease; }
-        .gold-border { border: 3px solid #dfb647; box-shadow: 0 15px 35px rgba(223, 182, 71, 0.2); }
-        .step { display: none; } .step.active { display: block; animation: fadeIn 0.5s ease-out forwards; }
+        
+        body {
+            background-color: #fff5f6;
+            background-image: radial-gradient(#fbc7d4 1.5px, transparent 1.5px);
+            background-size: 18px 18px;
+            color: #564447;
+            font-family: 'Tajawal', 'Cairo', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px 25px;
+            border-radius: 40px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            border: 2px solid #ffe3e7;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(220, 160, 170, 0.15);
+            transition: all 0.4s ease;
+        }
+        
+        /* إطار ذهبي ناعم ووردي يظهر بعد المفاجأة */
+        .gold-border { 
+            border: 3px solid #dfb647; 
+            box-shadow: 0 15px 35px rgba(223, 182, 71, 0.2);
+        }
+        
+        .step { display: none; }
+        .step.active { display: block; animation: fadeIn 0.5s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
         h2 { font-size: 1.6rem; color: #bd7a8b; margin-bottom: 20px; font-weight: 700; }
         p { font-size: 1.05rem; line-height: 1.6; margin-bottom: 25px; color: #6b5558; }
-        .btn { background: linear-gradient(135deg, #fbc7d4, #ffb3c1); color: white; border: none; padding: 14px 25px; font-size: 1.1rem; font-weight: bold; border-radius: 30px; cursor: pointer; width: 100%; margin-bottom: 15px; }
-        .btn-outline { background: white; color: #bd7a8b; border: 2px solid #fbc7d4; }
-        .loader { border: 5px solid #fff0f2; border-top: 5px solid #dca0aa; border-radius: 50%; width: 65px; height: 65px; animation: spin 1s linear infinite; margin: 40px auto 30px; }
+
+        /* ستايل الأزرار الكيوت مع تأثير الـ Hover */
+        .btn {
+            background: linear-gradient(135deg, #fbc7d4, #ffb3c1); 
+            color: white; 
+            border: none;
+            padding: 14px 25px; 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            border-radius: 30px;
+            cursor: pointer; 
+            width: 100%; 
+            margin-bottom: 15px; 
+            box-shadow: 0 5px 15px rgba(251, 199, 212, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        /* حركة الـ Hover للأزرار الأساسية */
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(251, 199, 212, 0.6);
+            background: linear-gradient(135deg, #ffb3c1, #fbc7d4);
+        }
+
+        .btn-outline { 
+            background: white; 
+            color: #bd7a8b; 
+            border: 2px solid #fbc7d4;
+            box-shadow: none;
+        }
+        .btn-outline:hover {
+            background: #fff0f2;
+            color: #bd7a8b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(251, 199, 212, 0.2);
+        }
+
+        /* ⏳ شاشة الدويرة اللطيفة الوردية */
+        .loader {
+            border: 5px solid #fff0f2;
+            border-top: 5px solid #dca0aa;
+            border-radius: 50%;
+            width: 65px;
+            height: 65px;
+            animation: spin 1s linear infinite;
+            margin: 40px auto 30px;
+        }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .reveal-main-title { font-size: 2.6rem; font-weight: 900; color: #dfb647; margin-bottom: 20px; }
-        .screenshot-btn { background: #c19b27; color: white; border: none; padding: 16px 25px; font-size: 1.15rem; font-weight: 700; border-radius: 35px; cursor: pointer; width: 100%; }
-        .names-row-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 25px; }
-        .grid-name-card { background: #fff9fa; border: 2px solid #fbc7d4; padding: 16px 10px; border-radius: 20px; cursor: pointer; font-size: 1.1rem; font-weight: 700; color: #bd7a8b; }
-        .inner-gold-box { border: 2px solid #dfb647; border-radius: 25px; padding: 30px 15px; margin: 20px 0; background-color: #fffbfa; }
-        .badge-tag { background-color: #fbc7d4; color: #fff; padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; display: inline-block; margin-bottom: 20px; }
+        
+        /* 💍 شاشة الصدمة الكبرى */
+        .reveal-main-title { font-size: 2.6rem; font-weight: 900; color: #dfb647; margin-bottom: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
+        
+        .screenshot-btn {
+            background: #c19b27; color: white; border: none; padding: 16px 25px;
+            font-size: 1.15rem; font-weight: 700; border-radius: 35px; cursor: pointer; width: 100%;
+            box-shadow: 0 5px 15px rgba(193, 155, 39, 0.3);
+            transition: all 0.3s ease;
+        }
+        .screenshot-btn:hover {
+            background: #ad8a20;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(193, 155, 39, 0.5);
+        }
+
+        /* 👭 أزرار الأسماء المقسمة ثنائياً مع الـ Hover */
+        .names-row-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        .grid-name-card {
+            background: #fff9fa;
+            border: 2px solid #fbc7d4;
+            padding: 16px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #bd7a8b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+        /* حركة الـ Hover لبطاقات الأسماء البنوتية */
+        .grid-name-card:hover { 
+            background: #fbc7d4; 
+            color: white;
+            border-color: #fbc7d4;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(251, 199, 212, 0.4);
+        }
+
+        /* 📜 صندوق كرت الدعوة الذهبي والناعم */
+        .inner-gold-box {
+            border: 2px solid #dfb647;
+            border-radius: 25px;
+            padding: 30px 15px;
+            margin: 20px 0;
+            background-image: radial-gradient(#dfb647 0.8px, transparent 0.8px);
+            background-size: 10px 10px;
+            background-color: #fffbfa;
+            box-shadow: inset 0 0 10px rgba(223, 182, 71, 0.05);
+        }
+        .badge-tag {
+            background-color: #fbc7d4; color: #fff; padding: 6px 15px;
+            border-radius: 20px; font-size: 0.85rem; font-weight: bold; display: inline-block; margin-bottom: 20px;
+        }
         .invite-name { font-size: 1.7rem; font-weight: 800; color: #bd7a8b; margin-bottom: 15px; }
         .invite-text { font-size: 1.05rem; line-height: 1.7; color: #564447; margin-bottom: 15px; }
-        .btn-restart { background: #bd7a8b; color: white; border: none; padding: 14px 20px; font-size: 1.1rem; font-weight: 700; border-radius: 30px; width: 100%; margin-bottom: 12px; }
-        .grey-btn { background: #f4eff0; color: #6b5558; border: none; padding: 12px 20px; font-size: 1rem; font-weight: 700; border-radius: 30px; width: 100%; }
-        /* شاشة الترحيب */
-        .welcome-screen { position: fixed; top:0; left:0; width:100%; height:100%; background:#fff5f6; z-index:9999; display:flex; justify-content:center; align-items:center; }
+        
+        /* أزرار الرجوع الجديدة */
+        .btn-restart {
+            background: linear-gradient(135deg, #bd7a8b, #dca0aa);
+            color: white; border: none; padding: 14px 20px;
+            font-size: 1.1rem; font-weight: 700; border-radius: 30px; cursor: pointer; width: 100%; margin-bottom: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(189, 122, 139, 0.3);
+        }
+        .btn-restart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(189, 122, 139, 0.5);
+        }
+        .grey-btn {
+            background: #f4eff0; color: #6b5558; border: none; padding: 12px 20px;
+            font-size: 1rem; font-weight: 700; border-radius: 30px; cursor: pointer; width: 100%;
+            transition: all 0.2s ease;
+        }
+        .grey-btn:hover {
+            background: #ebdce0;
+        }
     </style>
 </head>
 <body>
-
-    <audio id="myAudio" src="song.mp3" loop></audio>
-
-    <div id="welcomeScreen" class="welcome-screen">
-        <button class="btn" style="width: 80%;" onclick="startExperience()">اضغطي هنا لبدء المفاجأة 🌸</button>
-    </div>
-
     <div id="mainContainer" class="container">
+        
         <div id="step1" class="step active">
             <h2>مفاجأة عيد الميلاد! 🎉</h2>
-            <button class="btn btn-outline" onclick="alert('أفاااا! مو هذا التاريخ..')">15 - 6 (يونيو)</button>
+            <p>أهلاً بنات خالاتي الجميلات! لتأكيد الحساب وفتح ملف مفاجأة عيد ميلاد [فطوم]، يُرجى إدخال التاريخ الصحيح لليوم السعيد؟</p>
+            <button class="btn btn-outline" onclick="alert('أفاااا! مو هذا التاريخ، ركزوا ركزوا وعيدوا الاختيار! 😂👏')">15 - 6 (يونيو)</button>
             <button class="btn" onclick="nextStep(2)">29 - 5 (مايو)</button>
+            <button class="btn btn-outline" onclick="alert('أفاااا! مو هذا التاريخ، ركزوا ركزوا وعيدوا الاختيار! 😂👏')">12 - 4 (أبريل)</button>
         </div>
+
         <div id="step2" class="step">
             <h2>سؤال السرعة والأمان 🤫</h2>
+            <p>تأكد الحساب بنجاح! قبل ما نفتح الهدية والمفاجأة الكبرى.. هل تعتقدون إن فطوم بتصيح من الفرحة لما تشوفها اليوم؟ 🥹</p>
             <button class="btn" onclick="nextStep(3)">هيه أكيد بتصيح! 👀</button>
+            <button class="btn" onclick="nextStep(3)">لا، بتضحك وتطير من الوناسة 🥰</button>
+            <button class="btn" onclick="nextStep(3)">المفاجأة بتصيحنا كلنا من الصدمة! 💣</button>
         </div>
+
         <div id="step3" class="step">
             <h2>الخطوة الأخيرة 📥</h2>
-            <button class="btn" onclick="startLoadingProcess()">📥 تحميل الهدية وتفعيل الرابط</button>
+            <p>تتبقى خطوة واحدة فقط لتفعيل المفاجأة! يرجى الضغط على الزر أدناه لتحميل كرت هدية فطوم ومعاينة الملف المرفق:</p>
+           <button class="btn" onclick="startLoadingProcess()">📥 تحميل الهدية وتفعيل الرابط</button>
         </div>
+
         <div id="stepLoading" class="step">
             <div class="loader"></div>
-            <h3>جاري التحميل...</h3>
+            <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 15px; color: #bd7a8b;">جاري التحميل وتفعيل الكود الرقمي...</h3>
+            <p style="color: #d6455b; font-weight: bold; font-size: 1.1rem;">عفواً.. حدث خطأ غير متوقع في السيرفر! ⚠️</p>
         </div>
+
         <div id="stepReveal" class="step">
+            <div style="font-size:4.5rem; margin-bottom:10px; animation: float 3s infinite;">💍</div>
+            <div style="font-size: 1.35rem; font-weight: bold; margin-bottom: 15px; color: #564447;">الموقع ما علّق.. والهدية مو لفطوم! 😉</div>
             <div class="reveal-main-title">أنا العروسة الجديدة! 👰🏻‍♀️✨</div>
-            <button class="screenshot-btn" onclick="showGatePage()">اضغطي لاستلام دعوتك السرية ✉️✨</button>
+            <p style="line-height:1.7; margin-bottom:30px; font-size: 1.05rem;">الوداع يا عزوبية! رسميّاً بنت خالتكم وقطعة من قلبكم بتلبس الطرحة البيضاء قريب.. فرحة هالعمر ما تكتمل بدونكم صوبي يا خواتي وسندي. 🤍</p>
+            <button class="screenshot-btn" onclick="playWeddingMusicAndGo()">اضغطي لاستلام دعوتك السرية والخاصة ✉️✨</button>
         </div>
+
         <div id="stepGate" class="step">
-            <h2>بوابة شقيقات العروس</h2>
+            <div style="font-size: 2.5rem; margin-bottom: 5px;">👩‍❤️‍👩🌸</div>
+            <h2 style="color: #bd7a8b; font-size: 1.8rem; font-weight: 800; margin: 15px 0;">بوابة شقيقات العروس</h2>
+            <p style="font-size:1rem; line-height:1.5; margin-bottom: 20px;">يا روح وروائح بنت خالتكم.. كل وحدة تضغط على اسمها الخاص عشان تنزل وتشوف بطاقة دورها السري والخاص في عرسنا المنتظر:</p>
+            
             <div class="names-row-container">
+                <div class="grid-name-card" onclick="openInvitation('سارة رضي')">سارة رضي 🌸</div>
+                <div class="grid-name-card" onclick="openInvitation('ليال المعلم')">ليال المعلم 🌸</div>
                 <div class="grid-name-card" onclick="openInvitation('فطوم رضي')">فطوم رضي 🌸</div>
                 <div class="grid-name-card" onclick="openInvitation('فطوم معلم')">فطوم معلم 🌸</div>
             </div>
         </div>
+
         <div id="stepInviteCard" class="step">
+            <h2 style="color:#bd7a8b; font-size:1.6rem; font-weight:900;">دعوتكِ الخاصة وصلت 📬</h2>
+            
             <div class="inner-gold-box">
+                <div style="font-size: 0.9rem; color:#bfa128; font-weight:bold; letter-spacing:1px; margin-bottom:5px;">OFFICIAL WEDDING ANNOUNCEMENT</div>
                 <div id="badgePlace" class="badge-tag"></div>
+                
                 <div id="namePlace" class="invite-name"></div>
                 <div id="textPlace" class="invite-text"></div>
+                <div style="font-size:1.8rem;">💍🤍🌸</div>
             </div>
-            <button class="btn-restart" onclick="location.reload()">🏠العودة للصفحه الرئيسيه</button>
+
+            <button class="btn-restart" onclick="restartToBeginning()">🏠العودة للصفحه الرئيسيه</button>
+            <button class="grey-btn" onclick="backToGate()">⬅️ رجوع لاختيار اسم آخر</button>
+            <p style="font-size:0.85rem; color:#a1888b; margin-top:15px;">💡 (تقدرين تصورين الشاشة لحفظ دعوتكِ فوراً 📸)</p>
         </div>
+
     </div>
 
+    <div id="bg-music-player" style="position: absolute; top: -9999px; left: -9999px;"></div>
+
     <script>
-        // دالة الترحيب اللي تشغل الصوت غصب
-        function startExperience() {
-            var audio = document.getElementById("myAudio");
-            audio.play(); 
-            document.getElementById("welcomeScreen").style.display = "none";
-        }
+        // تعريف متغير الصوت ليكون عاماً
+        var globalAudio = null;
 
         function nextStep(stepNum) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
@@ -96,21 +265,74 @@
         }
 
         function startLoadingProcess() {
+            // الانتقال المباشر لشاشة التحميل لزوم الحبكة والانتظار 3.5 ثانية
             nextStep('Loading');
+
             setTimeout(function() {
                 document.getElementById('mainContainer').classList.add('gold-border');
                 nextStep('Reveal');
-            }, 3500);
+            }, 3500); 
+        }
+
+        // الدالة السحرية البديلة والمضمونة للآيفون لتفجير الصوت مع كبسة الزر الذهبي
+        function playWeddingMusicAndGo() {
+            // نقوم بإنشاء عنصر الصوت وتشغيله مباشرة فوراً مع لمسة الاصبع
+            document.getElementById('bg-music-player').innerHTML = `
+                <audio id="iosWeddingAudio" loop>
+                    <source src="song.mp3" type="audio/mpeg">
+                </audio>
+            `;
+            
+            globalAudio = document.getElementById('iosWeddingAudio');
+            if (globalAudio) {
+                globalAudio.play().catch(function(error) {
+                    console.log("الآيفون قيد التشغيل:", error);
+                });
+            }
+            
+            // نفتح شاشة بوابة الأسماء فوراً والصوت شغال
+            showGatePage();
         }
 
         function showGatePage() { nextStep('Gate'); }
+        function backToGate() { nextStep('Gate'); }
+        
+        function restartToBeginning() {
+            document.getElementById('mainContainer').classList.remove('gold-border');
+            // إيقاف وتصفير الصوت تماماً عند العودة للرئيسية
+            if (globalAudio) {
+                globalAudio.pause();
+                globalAudio.currentTime = 0;
+            }
+            document.getElementById('bg-music-player').innerHTML = ''; 
+            nextStep(1);
+        }
+
+        // قاعدة بيانات الشقيقات الأربعة الأصلية
+        const datasets = {
+            'فطوم رضي': {
+                badge: "Official Badge: 👑🎂إلى توأم روحي وصاحبة الميلاد",
+                name: "يا فاطمة رضي الغالية",
+                text: "سامحيني  فطومي سويت لش مقلب خفيف  وقصيت عليش بمناسبة عيد ميلادش! .. بس أدري فيش تدرين إن ما في فرحة بالدنيا تسبق فرحتي فيش وبوجودش صوبي .. مكانتش دائما في قلبي ما توصفها كلمات، أنتين مو بس بنت خالتي، أنتين توأم روحي وأقرب وحدة لي بهالدنيا والملجأ الدافئ لحياتي .. تجهزي خلف جبدي عشان تصيرين أحلى أخت عروس قريبا، ونطير بالوناسة مع بعض خطوة بخطوة، ونعيش هالأيام الحلوة ويا بعض .. كل عام وأنتِ بقلبي وسندي وسر سعادتي، وأحبش واجد يا أحلى عروس وأجمل صاحبة عيد! 🤍💍"
+            },
+            'فطوم معلم': {
+                badge: "Official Badge: أختي الحبيبة، وملكة الفرفشة والسرور 👭✨",
+                name: "يا فاطمة معلم الغالية",
+                text: " فطومي، يا روح وعيون أختش الكبيرة.. ما أقدر أوصف لش وش كثر شعوري الحين مليان حب، أنتين مو بس أختي الصغيرة، أنتين أقرب وحدة لي في هالدنيا كلها، كاتمة أسراري والقلب الحنون اللي أركض له دائماً .. كبرتي وعشتي معاي كل تفاصيل حياتي بحلوها ومرها، واليوم وأنا أبدأ درب جديد، فرحتي ودموعي كلها ما تكتمل إلا بوجودش لاصقة فيني، ساندة ظهري وعزوتي مثل ما كنتي دوماً .. الصدمة قوية صح؟ بس الحين نبي الهمة الحقيقية! جهزي لي أحلى فستان، وأبي أقوى طاقة تملكينها، لأن عرس أختش يبيش تولعين القاعة بهجة، رقص، وتفرحين معاي من كل قلبش .. أحبش يا قطعة من روحي وعزوتي  بالدنيا! 🤍🎵"
+            },
+            'سارة رضي': {
+                badge: "Official Badge: شقيقة العروس وسندها وعزها 🥹🤍",
+                name: "يا سارة رضي الغالية",
+                text: "أحمم سارة البورمي، أدري انش تأثرتين من الصدمة والوناسة! .. و رغم إني أكبر منش بواجد ورغم فرق السن اللي بيننا، إلا انش عزيزة عليّ بشكل ما تتخيلينه .. صرتين مثل أختي الصغيرونة وما أقدر أستغني عن  وجودش وحضورش صوبي ولو للحظة واحدة في هالمرحلة الجديدة من حياتي .. بتصيرين شقيقة العروس رسميّاً، فجهزي الأحضان القوية والكليسنات من الحين، لأن دموع فرحتنا الليلة ما بتوقف! أحبش واجد. 🤍"
+            },
+            'ليال المعلم': {
+                badge: "Official Badge: وآخر العنقود، والطفلة المزعجة الطويلة 🌸✨",
+                name: "يا ليال المعلم الغالية",
+                text: " ليالي البوكمي، يا أصغر زهرة في بيتنا وآخر العنقود بينا البنات .. أنتين حد مزعجة واجد، وساعات تفرّين راسي وترفعين ضغطي، لكن ما شاء الله الحين صرتي أطول مني بعد! بس رغماً عن كل هالإزعاج والهواش ، بتظلين اختي الصغيرة ، وأختي المحبوبة اللي ما أتخيل دنيتي بدونها .. فرحتي اليوم تضاعفت وكبرت لانش بتشاركين أختش الكبيرة كل صغيرة وكبيرة في تفاصيل التجهيزات واللحظات السعيدة اللي بنعيشها مع بعض .. صرتي رسميّاً أخت العروس، فجهزي أحلى كشخة وأبهى ابتسامة، وعاد هالله هالله بالهدوء في العرس بلا حنة، ها! أبي الأيام الجاية كلها حب وفرح وسعادة تلوق بنا.. أحبش يا أطول وحدة في البيت، ويا أصغر قلب يسكننا! 🤍✨"
+            }
+        };
 
         function openInvitation(key) {
-            // (بياناتك الأصلية)
-            const datasets = {
-                'فطوم رضي': { badge: "👑🎂", name: "فاطمة رضي", text: "كل عام وأنتِ بقلبي وسندي وسر سعادتي..." },
-                'فطوم معلم': { badge: "👭✨", name: "فاطمة معلم", text: "يا روح وعيون أختش الكبيرة..." }
-            };
             document.getElementById('badgePlace').innerText = datasets[key].badge;
             document.getElementById('namePlace').innerText = datasets[key].name;
             document.getElementById('textPlace').innerText = datasets[key].text;
