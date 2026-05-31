@@ -218,14 +218,14 @@
             <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
             <h2>لحظة الحقيقة...</h2>
             <p style="font-size: 1.2rem; color: #bd7a8b; font-weight: bold;">هل أنتم جاهزون للمفاجأة؟ ✨</p>
-          <button class="btn" onclick="playMusicAndNext()">جاهزين! 🚀</button>
+            <button class="btn" onclick="nextStep('Reveal')">جاهزين! 🚀</button>
         </div>
 
         <div id="stepReveal" class="step">
             <div style="font-size:4.5rem; margin-bottom:10px; animation: float 3s infinite;">💍</div>
             <div class="reveal-main-title">أنا العروسة الجديدة! 👰🏻‍♀️✨</div>
             <p style="line-height:1.7; margin-bottom:30px; font-size: 1.05rem;">الوداع يا عزوبية! رسميّاً بنت خالتكم وقطعة من قلبكم بتلبس الطرحة البيضاء قريب.. فرحة هالعمر ما تكتمل بدونكم صوبي يا خواتي وسندي. 🤍</p>
-           <button class="screenshot-btn" onclick="nextStep('Gate')">اضغطي لاستلام دعوتك السرية ✉️✨</button>
+            <button class="screenshot-btn" onclick="playWeddingMusicAndGo()">اضغطي لاستلام دعوتك السرية ✉️✨</button>
         </div>
 
         <div id="stepGate" class="step">
@@ -269,16 +269,19 @@
     globalAudio.loop = true;
     document.body.appendChild(globalAudio);
 
-// دالة جديدة تشغل الأغنية وتنتقل لصفحة العروسة
-function playMusicAndNext() {
-    // تشغيل الأغنية
-    globalAudio.play().catch(function(error) {
-        console.log("بانتظار تفاعل المستخدم:", error);
-    });
-    
-    // الانتقال لصفحة العروسة
-    nextStep('Reveal');
-}
+function nextStep(stepName) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        
+        // إذا كان stepName يبدأ بكلمة "step" أصلاً لا نضفها، وإذا كان مجرد رقم أو اسم نضيفها
+        let targetId = stepName.toString().startsWith('step') ? stepName : 'step' + stepName;
+        
+        var element = document.getElementById(targetId);
+        if (element) {
+            element.classList.add('active');
+        } else {
+            console.error("العنصر غير موجود: " + targetId);
+        }
+    }
 
     // دالة التحميل: الآن تنقل المستخدم إلى "Ready" بدلاً من "Reveal"
     function startLoadingProcess() {
