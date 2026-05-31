@@ -213,12 +213,19 @@
             <p style="color: #d6455b; font-weight: bold; font-size: 1.1rem;">عفواً.. حدث خطأ غير متوقع في السيرفر! ⚠️</p>
         </div>
 
+        <div id="stepReady" class="step">
+    <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
+    <h2>لحظة الحقيقة...</h2>
+    <p style="font-size: 1.2rem; color: #bd7a8b; font-weight: bold;">هل أنتم جاهزون لنتعرف على أدواركم في هذا العرس الأسطوري؟ 👰🏻‍♀️✨</p>
+    <button class="btn" onclick="playWeddingMusicAndGo()">Let's Go! 🚀</button>
+</div>
+
         <div id="stepReveal" class="step">
             <div style="font-size:4.5rem; margin-bottom:10px; animation: float 3s infinite;">💍</div>
             <div style="font-size: 1.35rem; font-weight: bold; margin-bottom: 15px; color: #564447;">الموقع ما علّق.. والهدية مو لفطوم! 😉</div>
             <div class="reveal-main-title">أنا العروسة الجديدة! 👰🏻‍♀️✨</div>
             <p style="line-height:1.7; margin-bottom:30px; font-size: 1.05rem;">الوداع يا عزوبية! رسميّاً بنت خالتكم وقطعة من قلبكم بتلبس الطرحة البيضاء قريب.. فرحة هالعمر ما تكتمل بدونكم صوبي يا خواتي وسندي. 🤍</p>
-            <button class="screenshot-btn" onclick="playWeddingMusicAndGo()">اضغطي لاستلام دعوتك السرية والخاصة ✉️✨</button>
+            <button class="screenshot-btn" onclick="nextStep('Ready')">اضغطي لاستلام دعوتك السرية والخاصة ✉️✨</button>
         </div>
 
         <div id="stepGate" class="step">
@@ -254,90 +261,87 @@
     </div>
 
     <div id="bg-music-player" style="position: absolute; top: -9999px; left: -9999px;"></div>
+    
+<script>
+    // إنشاء عنصر صوت واحد دائم لا يتغير
+    var globalAudio = document.createElement('audio');
+    globalAudio.src = "song.mp3";
+    globalAudio.loop = true;
+    document.body.appendChild(globalAudio);
 
-    <script>
-        // تعريف متغير الصوت ليكون عاماً
-        var globalAudio = null;
+    function nextStep(stepNum) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step' + stepNum).classList.add('active');
+    }
 
-        function nextStep(stepNum) {
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById('step' + stepNum).classList.add('active');
+    function startLoadingProcess() {
+        nextStep('Loading');
+        setTimeout(function() {
+            document.getElementById('mainContainer').classList.add('gold-border');
+            nextStep('Reveal');
+        }, 3500); 
+    }
+
+    // تشغيل الموسيقى مرة واحدة فقط ولن تنقطع بعد ذلك
+    function playWeddingMusicAndGo() {
+        globalAudio.play().catch(function(error) {
+            console.log("بانتظار تفاعل المستخدم:", error);
+        });
+        showGatePage();
+    }
+
+    function nextStep(stepNum) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        // إذا كان stepNum نص (مثل Ready أو Gate) نستخدمه مباشرة
+        document.getElementById('step' + stepNum).classList.add('active');
+    }
+
+    function playWeddingMusicAndGo() {
+        globalAudio.play().catch(function(error) {
+            console.log("بانتظار تفاعل المستخدم:", error);
+        });
+        nextStep('Gate'); // الانتقال للبوابة بعد تشغيل الموسيقى
+    }
+
+    function showGatePage() { nextStep('Gate'); }
+    function backToGate() { nextStep('Gate'); }
+    
+    function restartToBeginning() {
+        document.getElementById('mainContainer').classList.remove('gold-border');
+        // إذا تبينها توقف عند الرجوع للرئيسية خلي الكود كما هو، إذا تبينها تستمر احذفي السطور اللي تحت
+        globalAudio.pause();
+        globalAudio.currentTime = 0;
+        nextStep(1);
+    }
+
+    const datasets = {
+        'فطوم رضي': {
+            badge: "Official Badge: 👑🎂إلى توأم روحي وصاحبة الميلاد",
+            name: "بنت خالتي فاطمة رضي ",
+            text: "سامحيني فطومي سويت لش مقلب خفيف وقصيت عليش بمناسبة عيد ميلادش! .. بس أدري فيش تدرين إن ما في فرحة بالدنيا تسبق فرحتي فيش وبوجودش صوبي .. مكانتش دائما في قلبي ما توصفها كلمات، أنتين مو بس بنت خالتي، أنتين توأم روحي وأقرب وحدة لي بهالدنيا والملجأ الدافئ لحياتي .. تجهزي خلف جبدي عشان تصيرين أحلى أخت عروس قريبا، ونطير بالوناسة مع بعض خطوة بخطوة، ونعيش هالأيام الحلوة ويا بعض .. كل عام وأنتِ بقلبي وسندي وسر سعادتي، وأحبش واجد يا أحلى عروس وأجمل صاحبة عيد! 🤍💍"
+        },
+        'فطوم معلم': {
+            badge: "Official Badge: أختي الحبيبة، وملكة الفرفشة والسرور 👭✨",
+            name: "أختي فاطمة معلم",
+            text: " فطومي، يا روح وعيون أختش الكبيرة.. ما أقدر أوصف لش وش كثر شعوري الحين مليان حب، أنتين مو بس أختي الصغيرة، أنتين أقرب وحدة لي في هالدنيا كلها، كاتمة أسراري والقلب الحنون اللي أركض له دائماً .. كبرتي وعشتي معاي كل تفاصيل حياتي بحلوها ومرها، واليوم وأنا أبدأ درب جديد، فرحتي ودموعي كلها ما تكتمل إلا بوجودش لاصقة فيني، ساندة ظهري وعزوتي مثل ما كنتي دوماً .. الصدمة قوية صح؟ بس الحين نبي الهمة الحقيقية! جهزي لي أحلى فستان، وأبي أقوى طاقة تملكينها، لأن عرس أختش يبيش تولعين القاعة بهجة، رقص، وتفرحين معاي من كل قلبش .. أحبش يا قطعة من روحي وعزوتي بالدنيا! 🤍🎵"
+        },
+        'سارة رضي': {
+            badge: "Official Badge: شقيقة العروس وسندها وعزها 🥹🤍",
+            name: "بنت خالتي سارة رضي ",
+            text: "أحمم سارة البورمي، أدري انش تأثرتين من الصدمة والوناسة! .. و رغم إني أكبر منش بواجد ورغم فرق السن اللي بيننا، إلا انش عزيزة عليّ بشكل ما تتخيلينه .. صرتين مثل أختي الصغيرونة وما أقدر أستغني عن وجودش وحضورش صوبي ولو للحظة واحدة في هالمرحلة الجديدة من حياتي .. بتصيرين شقيقة العروس رسميّاً، فجهزي الأحضان القوية والكليسنات من الحين، لأن دموع فرحتنا الليلة ما بتوقف! أحبش واجد. 🤍"
+        },
+        'ليال المعلم': {
+            badge: "Official Badge: وآخر العنقود، والطفلة المزعجة الطويلة 🌸✨",
+            name: "أختي ليال المعلم ",
+            text: " ليالي البوكمي، يا أصغر زهرة في بيتنا وآخر العنقود بينا البنات .. أنتين حد مزعجة واجد، وساعات تفرّين راسي وترفعين ضغطي، لكن ما شاء الله الحين صرتي أطول مني بعد! بس رغماً عن كل هالإزعاج والهواش ، بتظلين اختي الصغيرة ، وأختي المحبوبة اللي ما أتخيل دنيتي بدونها .. فرحتي اليوم تضاعفت وكبرت لانش بتشاركين أختش الكبيرة كل صغيرة وكبيرة في تفاصيل التجهيزات واللحظات السعيدة اللي بنعيشها مع بعض .. صرتي رسميّاً أخت العروس، فجهزي أحلى كشخة وأبهى ابتسامة، وعاد هالله هالله بالهدوء في العرس بلا حنة، ها! أبي الأيام الجاية كلها حب وفرح وسعادة تلوق بنا.. أحبش يا أطول وحدة في البيت، ويا أصغر قلب يسكننا! 🤍✨"
         }
+    };
 
-        function startLoadingProcess() {
-            // الانتقال المباشر لشاشة التحميل لزوم الحبكة والانتظار 3.5 ثانية
-            nextStep('Loading');
+    function openInvitation(key) {
+        document.getElementById('badgePlace').innerText = datasets[key].badge;
+        document.getElementById('namePlace').innerText = datasets[key].name;
+        document.getElementById('textPlace').innerText = datasets[key].text;
+        nextStep('InviteCard');
+    }
+</script>
 
-            setTimeout(function() {
-                document.getElementById('mainContainer').classList.add('gold-border');
-                nextStep('Reveal');
-            }, 3500); 
-        }
-
-        // الدالة السحرية البديلة والمضمونة للآيفون لتفجير الصوت مع كبسة الزر الذهبي
-        function playWeddingMusicAndGo() {
-            // نقوم بإنشاء عنصر الصوت وتشغيله مباشرة فوراً مع لمسة الاصبع
-            document.getElementById('bg-music-player').innerHTML = `
-                <audio id="iosWeddingAudio" loop>
-                    <source src="song.mp3" type="audio/mpeg">
-                </audio>
-            `;
-            
-            globalAudio = document.getElementById('iosWeddingAudio');
-            if (globalAudio) {
-                globalAudio.play().catch(function(error) {
-                    console.log("الآيفون قيد التشغيل:", error);
-                });
-            }
-            
-            // نفتح شاشة بوابة الأسماء فوراً والصوت شغال
-            showGatePage();
-        }
-
-        function showGatePage() { nextStep('Gate'); }
-        function backToGate() { nextStep('Gate'); }
-        
-        function restartToBeginning() {
-            document.getElementById('mainContainer').classList.remove('gold-border');
-            // إيقاف وتصفير الصوت تماماً عند العودة للرئيسية
-            if (globalAudio) {
-                globalAudio.pause();
-                globalAudio.currentTime = 0;
-            }
-            document.getElementById('bg-music-player').innerHTML = ''; 
-            nextStep(1);
-        }
-
-        // قاعدة بيانات الشقيقات الأربعة الأصلية
-        const datasets = {
-            'فطوم رضي': {
-                badge: "Official Badge: 👑🎂إلى توأم روحي وصاحبة الميلاد",
-                name: "بنت خالتي فاطمة رضي",
-                text: "سامحيني  فطومي سويت لش مقلب خفيف  وقصيت عليش بمناسبة عيد ميلادش! .. بس أدري فيش تدرين إن ما في فرحة بالدنيا تسبق فرحتي فيش وبوجودش صوبي .. مكانتش دائما في قلبي ما توصفها كلمات، أنتين مو بس بنت خالتي، أنتين توأم روحي وأقرب وحدة لي بهالدنيا والملجأ الدافئ لحياتي .. تجهزي خلف جبدي عشان تصيرين أحلى أخت عروس قريبا، ونطير بالوناسة مع بعض خطوة بخطوة، ونعيش هالأيام الحلوة ويا بعض .. كل عام وأنتِ بقلبي وسندي وسر سعادتي، وأحبش واجد يا أحلى عروس وأجمل صاحبة عيد! 🤍💍"
-            },
-            'فطوم معلم': {
-                badge: "Official Badge: أختي الحبيبة، وملكة الفرفشة والسرور 👭✨",
-                name: "أختي فاطمة معلم",
-                text: " فطومي، يا روح وعيون أختش الكبيرة.. ما أقدر أوصف لش وش كثر شعوري الحين مليان حب، أنتين مو بس أختي الصغيرة، أنتين أقرب وحدة لي في هالدنيا كلها، كاتمة أسراري والقلب الحنون اللي أركض له دائماً .. كبرتي وعشتي معاي كل تفاصيل حياتي بحلوها ومرها، واليوم وأنا أبدأ درب جديد، فرحتي ودموعي كلها ما تكتمل إلا بوجودش لاصقة فيني، ساندة ظهري وعزوتي مثل ما كنتي دوماً .. الصدمة قوية صح؟ بس الحين نبي الهمة الحقيقية! جهزي لي أحلى فستان، وأبي أقوى طاقة تملكينها، لأن عرس أختش يبيش تولعين القاعة بهجة، رقص، وتفرحين معاي من كل قلبش .. أحبش يا قطعة من روحي وعزوتي  بالدنيا! 🤍🎵"
-            },
-            'سارة رضي': {
-                badge: "Official Badge: شقيقة العروس وسندها وعزها 🥹🤍",
-                name: "بنت خالتي سارة رضي",
-                text: "أحمم سارة البورمي، أدري انش تأثرتين من الصدمة والوناسة! .. و رغم إني أكبر منش بواجد ورغم فرق السن اللي بيننا، إلا انش عزيزة عليّ بشكل ما تتخيلينه .. صرتين مثل أختي الصغيرونة وما أقدر أستغني عن  وجودش وحضورش صوبي ولو للحظة واحدة في هالمرحلة الجديدة من حياتي .. بتصيرين شقيقة العروس رسميّاً، فجهزي الأحضان القوية والكليسنات من الحين، لأن دموع فرحتنا الليلة ما بتوقف! أحبش واجد. 🤍"
-            },
-            'ليال المعلم': {
-                badge: "Official Badge: وآخر العنقود، والطفلة المزعجة الطويلة 🌸✨",
-                name: "أختي ليال المعلم",
-                text: " ليالي البوكمي، يا أصغر زهرة في بيتنا وآخر العنقود بينا البنات .. أنتين حد مزعجة واجد، وساعات تفرّين راسي وترفعين ضغطي، لكن ما شاء الله الحين صرتي أطول مني بعد! بس رغماً عن كل هالإزعاج والهواش ، بتظلين اختي الصغيرة ، وأختي المحبوبة اللي ما أتخيل دنيتي بدونها .. فرحتي اليوم تضاعفت وكبرت لانش بتشاركين أختش الكبيرة كل صغيرة وكبيرة في تفاصيل التجهيزات واللحظات السعيدة اللي بنعيشها مع بعض .. صرتي رسميّاً أخت العروس، فجهزي أحلى كشخة وأبهى ابتسامة، وعاد هالله هالله بالهدوء في العرس بلا حنة، ها! أبي الأيام الجاية كلها حب وفرح وسعادة تلوق بنا.. أحبش يا أطول وحدة في البيت، ويا أصغر قلب يسكننا! 🤍✨"
-            }
-        };
-
-        function openInvitation(key) {
-            document.getElementById('badgePlace').innerText = datasets[key].badge;
-            document.getElementById('namePlace').innerText = datasets[key].name;
-            document.getElementById('textPlace').innerText = datasets[key].text;
-            nextStep('InviteCard');
-        }
-    </script>
-</body>
-</html>
