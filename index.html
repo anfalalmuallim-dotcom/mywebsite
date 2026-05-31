@@ -213,19 +213,19 @@
             <p style="color: #d6455b; font-weight: bold; font-size: 1.1rem;">عفواً.. حدث خطأ غير متوقع في السيرفر! ⚠️</p>
         </div>
 
+<!-- بعد شاشة التحميل مباشرة -->
         <div id="stepReady" class="step">
-    <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
-    <h2>لحظة الحقيقة...</h2>
-    <p style="font-size: 1.2rem; color: #bd7a8b; font-weight: bold;">هل أنتم جاهزون لنتعرف على أدواركم في هذا العرس الأسطوري؟ 👰🏻‍♀️✨</p>
-    <button class="btn" onclick="playWeddingMusicAndGo()">Let's Go! 🚀</button>
-</div>
+            <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
+            <h2>لحظة الحقيقة...</h2>
+            <p style="font-size: 1.2rem; color: #bd7a8b; font-weight: bold;">هل أنتم جاهزون للمفاجأة؟ ✨</p>
+            <button class="btn" onclick="nextStep('Reveal')">جاهزين! 🚀</button>
+        </div>
 
         <div id="stepReveal" class="step">
             <div style="font-size:4.5rem; margin-bottom:10px; animation: float 3s infinite;">💍</div>
-            <div style="font-size: 1.35rem; font-weight: bold; margin-bottom: 15px; color: #564447;">الموقع ما علّق.. والهدية مو لفطوم! 😉</div>
             <div class="reveal-main-title">أنا العروسة الجديدة! 👰🏻‍♀️✨</div>
             <p style="line-height:1.7; margin-bottom:30px; font-size: 1.05rem;">الوداع يا عزوبية! رسميّاً بنت خالتكم وقطعة من قلبكم بتلبس الطرحة البيضاء قريب.. فرحة هالعمر ما تكتمل بدونكم صوبي يا خواتي وسندي. 🤍</p>
-            <button class="screenshot-btn" onclick="nextStep('Ready')">اضغطي لاستلام دعوتك السرية والخاصة ✉️✨</button>
+            <button class="screenshot-btn" onclick="playWeddingMusicAndGo()">اضغطي لاستلام دعوتك السرية ✉️✨</button>
         </div>
 
         <div id="stepGate" class="step">
@@ -261,59 +261,58 @@
     </div>
 
     <div id="bg-music-player" style="position: absolute; top: -9999px; left: -9999px;"></div>
-    
+ 
 <script>
-    // إنشاء عنصر صوت واحد دائم لا يتغير
+    // إنشاء عنصر صوت واحد دائم
     var globalAudio = document.createElement('audio');
     globalAudio.src = "song.mp3";
     globalAudio.loop = true;
     document.body.appendChild(globalAudio);
 
-    function nextStep(stepNum) {
+function nextStep(stepName) {
         document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-        document.getElementById('step' + stepNum).classList.add('active');
+        
+        // إذا كان stepName يبدأ بكلمة "step" أصلاً لا نضفها، وإذا كان مجرد رقم أو اسم نضيفها
+        let targetId = stepName.toString().startsWith('step') ? stepName : 'step' + stepName;
+        
+        var element = document.getElementById(targetId);
+        if (element) {
+            element.classList.add('active');
+        } else {
+            console.error("العنصر غير موجود: " + targetId);
+        }
     }
 
+    // دالة التحميل: الآن تنقل المستخدم إلى "Ready" بدلاً من "Reveal"
     function startLoadingProcess() {
         nextStep('Loading');
         setTimeout(function() {
             document.getElementById('mainContainer').classList.add('gold-border');
-            nextStep('Reveal');
+            nextStep('Ready'); 
         }, 3500); 
     }
 
-    // تشغيل الموسيقى مرة واحدة فقط ولن تنقطع بعد ذلك
+    // دالة تشغيل الموسيقى والانتقال لبوابة الأسماء (تُستخدم في شاشة العروسة)
     function playWeddingMusicAndGo() {
         globalAudio.play().catch(function(error) {
             console.log("بانتظار تفاعل المستخدم:", error);
         });
-        showGatePage();
+        nextStep('Gate');
     }
 
-    function nextStep(stepNum) {
-        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-        // إذا كان stepNum نص (مثل Ready أو Gate) نستخدمه مباشرة
-        document.getElementById('step' + stepNum).classList.add('active');
+    // دوال مساعدة
+    function backToGate() { 
+        nextStep('Gate'); 
     }
-
-    function playWeddingMusicAndGo() {
-        globalAudio.play().catch(function(error) {
-            console.log("بانتظار تفاعل المستخدم:", error);
-        });
-        nextStep('Gate'); // الانتقال للبوابة بعد تشغيل الموسيقى
-    }
-
-    function showGatePage() { nextStep('Gate'); }
-    function backToGate() { nextStep('Gate'); }
     
     function restartToBeginning() {
         document.getElementById('mainContainer').classList.remove('gold-border');
-        // إذا تبينها توقف عند الرجوع للرئيسية خلي الكود كما هو، إذا تبينها تستمر احذفي السطور اللي تحت
         globalAudio.pause();
         globalAudio.currentTime = 0;
-        nextStep(1);
+        nextStep('1');
     }
 
+    // بيانات البطاقات
     const datasets = {
         'فطوم رضي': {
             badge: "Official Badge: 👑🎂إلى توأم روحي وصاحبة الميلاد",
@@ -344,4 +343,3 @@
         nextStep('InviteCard');
     }
 </script>
-
